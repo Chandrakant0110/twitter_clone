@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/constants/constants.dart';
+import 'package:twitter_clone/features/tweet/views/create_tweet.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,19 +17,22 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  int _page = 0;
+  final appBar = UIConstants.appBar();
+
+  void onPageChange(int index) {
+    setState(() {
+      _page = index;
+      print('changed to page $index');
+    });
+  }
+
+  onCreateTweet() {
+    Navigator.push(context, CreateTweetScreen.route());
+  }
+
   @override
   Widget build(BuildContext context) {
-    int _page = 0;
-
-    final appBar = UIConstants.appBar();
-
-    void onPageChange(int index) {
-      setState(() {
-        _page = index;
-        print('changed to page $index');
-      });
-    }
-
     return SafeArea(
       child: Scaffold(
         appBar: appBar,
@@ -37,9 +41,7 @@ class _HomeViewState extends State<HomeView> {
           children: UIConstants.bottomTabBarPages,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {});
-          },
+          onPressed: onCreateTweet,
           child: const Icon(
             Icons.add,
             color: Pallete.whiteColor,
