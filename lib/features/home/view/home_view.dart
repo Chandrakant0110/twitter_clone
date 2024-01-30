@@ -32,7 +32,20 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         appBar: appBar,
-        body: const Text('Lets Start with the HomePage'),
+        body: IndexedStack(
+          index: _page,
+          children: UIConstants.bottomTabBarPages,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {});
+          },
+          child: const Icon(
+            Icons.add,
+            color: Pallete.whiteColor,
+            size: 28,
+          ),
+        ),
         bottomNavigationBar: CupertinoTabBar(
           currentIndex: _page,
           onTap: onPageChange,
