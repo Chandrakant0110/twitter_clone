@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeView extends ConsumerWidget {
-
   static route() => MaterialPageRoute(
         builder: (context) => const HomeView(),
       );
@@ -11,6 +10,10 @@ class HomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold();
+    return const SafeArea(
+      child: Scaffold(
+        body: Text('Lets Start with the HomePage'),
+      ),
+    );
   }
 }
