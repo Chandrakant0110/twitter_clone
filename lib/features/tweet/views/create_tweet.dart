@@ -24,7 +24,7 @@ class CreateTweetScreen extends ConsumerStatefulWidget {
 
 class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
   final TextEditingController tweetTextController = TextEditingController();
-  List<XFile> images = [];
+  List<File> images = [];
 
   @override
   void dispose() {
@@ -117,8 +117,7 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                     ),
                     if (images.isNotEmpty)
                       CarouselSlider(
-                        items: images.map((xfile) {
-                          File file = File(xfile.path);
+                        items: images.map((file) {
                           return Container(
                               width: MediaQuery.of(context).size.width,
                               margin: const EdgeInsets.symmetric(horizontal: 5),
