@@ -28,6 +28,7 @@ class MyApp extends ConsumerWidget {
                   return const HomeView();
                 }
                 return const SignUpView();
+                // return const PickImageFromPhone();
               },
               error: (error, stackTrace) => ErrorPage(
                 error: error.toString(),
