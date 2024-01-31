@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -113,7 +114,21 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    if (images.isNotEmpty)
+                      CarouselSlider(
+                        items: images.map((xfile) {
+                          File file = File(xfile.path);
+                          return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Image.file(file));
+                        }).toList(),
+                        options: CarouselOptions(
+                          height: 400,
+                          enableInfiniteScroll: false,
+                        ),
+                      ),
                   ],
                 ),
               ),
