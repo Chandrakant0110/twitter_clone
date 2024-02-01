@@ -71,10 +71,7 @@ class TweetController extends StateNotifier<bool> {
         text: text,
         context: context,
       );
-
-      state = true;
       Navigator.pop(context);
-      state = false;
     }
   }
 
