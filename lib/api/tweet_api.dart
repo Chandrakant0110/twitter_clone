@@ -6,7 +6,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/core/providers.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
-
 import '../constants/appwrite_constants.dart';
 
 final tweetAPIProvider = Provider((ref) {
@@ -17,6 +16,7 @@ final tweetAPIProvider = Provider((ref) {
 
 abstract class ITweetAPI {
   FutureEither<Document> shareTweet(Tweet tweet);
+  Future<List<Document>> getTweets();
 }
 
 class TweetAPI implements ITweetAPI {
@@ -37,5 +37,14 @@ class TweetAPI implements ITweetAPI {
     } on AppwriteException catch (e, st) {
       return left(Failure(e.toString(), st));
     }
+  }
+
+  @override
+  Future<List<Document>> getTweets() async {
+    final documents = await _db.listDocuments(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.tweetCollections,
+    );
+    return documents.documents;
   }
 }
