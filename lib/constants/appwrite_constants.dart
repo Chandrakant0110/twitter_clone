@@ -12,7 +12,7 @@ class AppWriteConstants {
     return '$endPoint/storage/buckets/$imagesBucket/files/$imageId/view?project=$projectId&mode=admin';
   }
 
-  // static const endPoint = 'http://localhost:80/v1';  // works forAPp
+  // static const endPoint = 'http://localhost:80/v1'; // works forAPp
   // static const endPoint = 'http://192.168.22.189:80/v1';   --->works in webApp
 }
 

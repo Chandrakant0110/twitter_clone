@@ -1,9 +1,11 @@
+import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/core/enum/tweet_type_enum.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/widgets/carousel_image.dart';
 import 'package:twitter_clone/features/tweet/widgets/hashtags_text.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/theme/pallete.dart';
@@ -22,6 +24,7 @@ class TweetCard extends ConsumerWidget {
         data: (user) => Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: const EdgeInsets.all(10),
@@ -66,6 +69,16 @@ class TweetCard extends ConsumerWidget {
                           ),
 
                           HashtagText(text: tweet.text),
+                          if (tweet.tweetType == TweetType.image)
+                            CarouselImage(
+                              imageLinks: tweet.imageLinks,
+                            ),
+                          if (tweet.link.isNotEmpty) ...[
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            // AnyLinkPreview(link: 'https://${tweet.link}'),
+                          ]
                         ],
                       ),
                     ),

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class CarouselImage extends StatefulWidget {
@@ -17,6 +18,52 @@ class _CarouselImageState extends State<CarouselImage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Column(children: [
+          CarouselSlider(
+            items: widget.imageLinks.map((link) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.all(10),
+                child: Image.network(
+                  link,
+                  fit: BoxFit.contain,
+                ),
+              );
+            }).toList(),
+            options: CarouselOptions(
+              height: 400,
+              enableInfiniteScroll: false,
+              viewportFraction: 1,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              },
+            ),
+          ),
+          Row(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.imageLinks.asMap().entries.map((e) {
+              return Container(
+                width: 8,
+                height: 8,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      Colors.white.withOpacity(_current == e.key ? 0.9 : 0.4),
+                ),
+              );
+            }).toList(),
+          ),
+        ]),
+      ],
+    );
   }
 }
