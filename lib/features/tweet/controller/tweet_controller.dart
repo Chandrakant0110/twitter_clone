@@ -9,7 +9,7 @@ import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
-final tweetControllerProvider = StateNotifierProvider<TweetController, bool>(
+final tweetControllerProvider = StateNotifierProvider.autoDispose<TweetController, bool>(
   (ref) {
     final tweetAPI = ref.watch(tweetAPIProvider);
     final storageAPI = ref.watch(storageAPIProvider);
@@ -18,9 +18,14 @@ final tweetControllerProvider = StateNotifierProvider<TweetController, bool>(
   },
 );
 
-final getTweetsProvider = FutureProvider((ref) {
+final getTweetsProvider = FutureProvider.autoDispose((ref) {
   final tweetController = ref.watch(tweetControllerProvider.notifier);
   return tweetController.getTweets();
+});
+
+final getLatestTweetProvider = StreamProvider.autoDispose((ref) {
+  final tweetAPI = ref.watch(tweetAPIProvider);
+  return tweetAPI.getLatestTweet();
 });
 
 class TweetController extends StateNotifier<bool> {
