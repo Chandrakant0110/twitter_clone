@@ -86,7 +86,7 @@ class TweetController extends StateNotifier<bool> {
     final res = await _tweetAPI.shareTweet(tweet);
     state = false;
     res.fold((l) => showSnackBar(context, l.message), (r) => null);
-  
+  }
 
   Future<void> _shareTextTweet({
     required String text,
