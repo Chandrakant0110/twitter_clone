@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:twitter_clone/api/tweet_api.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class CreateTweetScreen extends ConsumerStatefulWidget {
@@ -32,6 +34,11 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
     tweetTextController.dispose();
   }
 
+  void shareTweet() {
+    ref.read(tweetControllerProvider.notifier).shareTweet(
+        images: images, text: tweetTextController.text, context: context);
+  }
+
   void onPickImages() async {
     print('pick images function called');
     images = await pickImage();
@@ -41,7 +48,7 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
-
+    final isLoading = ref.watch(tweetControllerProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -65,9 +72,7 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
           Padding(
             padding: const EdgeInsets.all(2.0),
             child: RoundedButton(
-              onTap: () {
-                print('tweet button clicked');
-              },
+              onTap: shareTweet,
               label: 'Post',
               backgroundColor: Pallete.blueColor,
               textColor: Pallete.whiteColor,
@@ -75,7 +80,7 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
           ),
         ],
       ),
-      body: currentUser == null
+      body: isLoading || currentUser == null
           ? const Loader()
           : SafeArea(
               child: SingleChildScrollView(

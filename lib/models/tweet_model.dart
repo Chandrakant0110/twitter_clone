@@ -44,8 +44,8 @@ class Tweet {
     List<String>? commentIds,
     String? id,
     int? reshareCount,
-    String? retweetedBy,
-    String? repliedTo,
+    // String? retweetedBy,
+    // String? repliedTo,
   }) {
     return Tweet(
       text: text ?? this.text,
