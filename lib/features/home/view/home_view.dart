@@ -36,6 +36,9 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         appBar: appBar,
+        // drawer: const Drawer(
+        //   child: Text('Icon'),
+        // ),
         body: IndexedStack(
           index: _page,
           children: UIConstants.bottomTabBarPages,
