@@ -1,7 +1,9 @@
 // import 'package:appwrite/models.dart';
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/api/storage_api.dart';
 import 'package:twitter_clone/api/tweet_api.dart';
 import 'package:twitter_clone/core/enum/tweet_type_enum.dart';
@@ -63,12 +65,35 @@ class TweetController extends StateNotifier<bool> {
 
   void reshareTweet(
     Tweet tweet,
-    UserModel currUser,
+    UserModel currentUser,
     BuildContext context,
   ) async {
-    
+    tweet = tweet.copyWith(
+      retweetedBy: currentUser.name,
+      likes: [],
+      commentIds: [],
+      reshareCount: tweet.reshareCount + 1,
+      tweetedAt: DateTime.now(),
+    );
+
     final res = await _tweetAPI.updateReshareCount(tweet);
-    res.fold((l) => null, (r) => null);
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) async {
+        tweet = tweet.copyWith(
+          id: ID.unique(),
+          reshareCount: 0,
+          tweetedAt: DateTime.now(),
+        );
+        final res2 = await _tweetAPI.shareTweet(tweet);
+        res2.fold(
+          (l) => showSnackBar(context, l.message),
+          (r) {
+            showSnackBar(context, 'Retweeted!');
+          },
+        );
+      },
+    );
   }
 
   void shareTweet({
@@ -123,6 +148,7 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       id: '',
       reshareCount: 0,
+      retweetedBy: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
@@ -151,6 +177,7 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       id: '',
       reshareCount: 0,
+      retweetedBy: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);

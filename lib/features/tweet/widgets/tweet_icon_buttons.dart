@@ -7,21 +7,24 @@ class TweetIconButton extends StatelessWidget {
   final String pathName;
   final String text;
   final VoidCallback onTap;
+  final textColor;
   const TweetIconButton({
     super.key,
     required this.pathName,
     required this.text,
     required this.onTap,
+    this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Row(
         children: [
           SvgPicture.asset(
             pathName,
-            color: Pallete.greyColor,
+            color: textColor == null ? Pallete.greyColor : Colors.green,
           ),
           Container(
             margin: const EdgeInsets.all(6),
