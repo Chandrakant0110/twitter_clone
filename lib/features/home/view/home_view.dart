@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBar,
+        appBar: _page == 0 ? appBar : null,
         // drawer: const Drawer(
         //   child: Text('Icon'),
         // ),
