@@ -2,7 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
+import 'package:twitter_clone/features/tweet/widgets/tweet_card.dart';
+import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
+import 'package:twitter_clone/features/user_profile/widget/follow_count.dart';
+import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
@@ -97,13 +103,108 @@ class UserProfile extends ConsumerWidget {
                               color: Pallete.greyColor,
                             ),
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              FollowCount(
+                                count: user.following.length,
+                                text: 'Following',
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              FollowCount(
+                                count: user.followers.length,
+                                text: 'Followers',
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          const Divider(
+                            color: Pallete.whiteColor,
+                          )
                         ],
                       ),
                     ),
                   ),
                 ];
               },
-              body: Container(),
+              body: ref.watch(getUserTweetsProvider(user.uid)).when(
+                    data: (tweets) {
+                      return ref.watch(getLatestTweetProvider).when(
+                            data: (data) {
+                              if (data.events.contains(
+                                  'databases.*.collections.${AppWriteConstants.tweetCollections}.documents.*.create')) {
+                                // condition is above
+                                tweets.insert(0, Tweet.fromMap(data.payload));
+                              } else if (data.events.contains(
+                                  'databases.*.collections.${AppWriteConstants.tweetCollections}.documents.*.update')) {
+                                // Steps for fetching the updates of retweeted in a App.
+                                // 1. get id of original tweet
+                                // 2. remove that tweet
+                                // 3. replace with the updated tweet
+
+                                // Step 1
+                                // find index of tweet from index array
+                                final startingPoint =
+                                    data.events[0].lastIndexOf('documents.');
+
+                                final endPoint =
+                                    data.events[0].lastIndexOf('.update');
+                                // Finding the tweetID form the data.events
+                                final tweetID = data.events[0].substring(
+                                    startingPoint + 10,
+                                    endPoint); //10 = no. of characters in "documents."
+                                // fetching that particular tweet
+                                var tweet = tweets
+                                    .where((element) => element.id == tweetID)
+                                    .first;
+                                // fetching the tweetIndex before removing the tweet
+                                final tweetIndex = tweets.indexOf(tweet);
+                                // Step 2
+                                // remove the tweet
+                                tweets.removeWhere(
+                                    (element) => element.id == tweetID);
+                                // get new latest data
+                                tweet = Tweet.fromMap(data.payload);
+
+                                // Step 3
+                                // add the latest data
+                                tweets.insert(tweetIndex, tweet);
+                              }
+                              return ListView.builder(
+                                itemCount: tweets.length,
+                                itemBuilder: (context, index) {
+                                  final tweet = tweets[index];
+                                  return TweetCard(tweet: tweet);
+                                },
+                              );
+                            },
+                            error: (error, stackTrace) => ErrorText(
+                              error: error.toString(),
+                            ),
+                            loading: () {
+                              return ListView.builder(
+                                itemCount: tweets.length,
+                                itemBuilder: (context, index) {
+                                  final tweet = tweets[index];
+                                  return TweetCard(tweet: tweet);
+                                },
+                              );
+                            },
+                          );
+                    },
+                    error: (error, stackTrace) {
+                      return ErrorText(
+                        error: error.toString(),
+                      );
+                    },
+                    loading: () => const Loader(),
+                  ),
             ),
     );
   }
