@@ -20,6 +20,8 @@ abstract class IUserAPI {
   Future<List<model.Document>> searchUserByName(String name);
   FutureEitherVoid updateUserData(UserModel userModel);
   Stream<RealtimeMessage> getLatestUserProfileData(String uid);
+  FutureEitherVoid followUser(UserModel userModel);
+  FutureEitherVoid addToFollowing(UserModel currentUser);
 }
 
 class UserAPI implements IUserAPI {
@@ -90,12 +92,56 @@ class UserAPI implements IUserAPI {
 
   @override
   Stream<RealtimeMessage> getLatestUserProfileData(String uid) {
-    // print(
-    //     'this is the latestUserProfileData from userApi data - ${_realtime.subscribe([
-    //               'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents'
-    //             ]).stream.toString()}');
     return _realtime.subscribe([
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents.$uid'
     ]).stream;
+  }
+
+  @override
+  FutureEitherVoid followUser(UserModel userModel) async {
+    try {
+      await _db.updateDocument(
+        databaseId: AppWriteConstants.databaseId,
+        collectionId: AppWriteConstants.userCollections,
+        documentId: userModel.uid,
+        data: {
+          'followers': userModel.followers,
+        },
+      );
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(
+        Failure(
+          e.message ?? 'Some unexpected error occurred',
+          st,
+        ),
+      );
+    } catch (e, st) {
+      return left(Failure(e.toString(), st));
+    }
+  }
+
+  @override
+  FutureEitherVoid addToFollowing(UserModel currentUser) async {
+    try {
+      await _db.updateDocument(
+        databaseId: AppWriteConstants.databaseId,
+        collectionId: AppWriteConstants.userCollections,
+        documentId: currentUser.uid,
+        data: {
+          'following': currentUser.following,
+        },
+      );
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(
+        Failure(
+          e.message ?? 'Some unexpected error occurred',
+          st,
+        ),
+      );
+    } catch (e, st) {
+      return left(Failure(e.toString(), st));
+    }
   }
 }

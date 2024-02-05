@@ -67,6 +67,14 @@ class UserProfile extends ConsumerWidget {
                                 print('edit profile button clicked');
                               } else {
                                 print('edit follow button clicked');
+                                ref
+                                    .read(
+                                        userProfileControllerProvider.notifier)
+                                    .followUser(
+                                      user: user,
+                                      context: context,
+                                      currentUser: currUser,
+                                    );
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -83,7 +91,9 @@ class UserProfile extends ConsumerWidget {
                             child: Text(
                               currUser.uid == user.uid
                                   ? 'Edit Profile'
-                                  : 'follow',
+                                  : currUser.uid.contains(user.uid)
+                                      ? 'unfollow'
+                                      : 'follow',
                             ),
                           ),
                         ),
