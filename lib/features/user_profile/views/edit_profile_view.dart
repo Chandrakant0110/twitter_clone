@@ -1,8 +1,10 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
@@ -21,12 +23,31 @@ class EditProfileView extends ConsumerStatefulWidget {
 class _EditProfileViewState extends ConsumerState<EditProfileView> {
   final nameController = TextEditingController();
   final bioController = TextEditingController();
-
+  File? bannerFile;
+  File? profileFile;
   @override
   void dispose() {
     super.dispose();
     nameController.dispose();
     bioController.dispose();
+  }
+
+  void selectBannerImage() async {
+    final bannerImg = await pickImage();
+    if (bannerImg != null) {
+      setState(() {
+        bannerFile = bannerImg;
+      });
+    }
+  }
+
+  void selectProfileImage() async {
+    final profileImg = await pickImage();
+    if (profileImg != null) {
+      setState(() {
+        profileFile = profileImg;
+      });
+    }
   }
 
   @override
@@ -56,22 +77,39 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                   height: 200,
                   child: Stack(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: user.bannerPic.isEmpty
-                            ? Container(
-                                color: Pallete.blueColor,
-                              )
-                            : Image.network(user.bannerPic),
+                      GestureDetector(
+                        onTap: selectBannerImage,
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: bannerFile != null
+                              ? Image.file(bannerFile!)
+                              : user.bannerPic.isEmpty
+                                  ? Container(
+                                      color: Pallete.blueColor,
+                                    )
+                                  : Image.network(
+                                      user.bannerPic,
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                        ),
                       ),
                       Positioned(
                         bottom: 20,
                         left: 20,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(user.profilePic),
-                          radius: 40,
+                        child: GestureDetector(
+                          onTap: selectProfileImage,
+                          child: profileFile != null
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(profileFile!),
+                                  radius: 40,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(user.profilePic),
+                                  radius: 40,
+                                ),
                         ),
                       ),
                     ],

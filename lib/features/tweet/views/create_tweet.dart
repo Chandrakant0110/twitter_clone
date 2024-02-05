@@ -45,7 +45,7 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
 
   void onPickImages() async {
     print('pick images function called');
-    images = await pickImage();
+    images = await pickMultipleImages();
     setState(() {});
   }
 

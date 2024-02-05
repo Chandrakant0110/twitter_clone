@@ -14,7 +14,7 @@ String getNameFromEmail(String email) {
   return email.split('@')[0];
 }
 
-Future<List<File>> pickImage() async {
+Future<List<File>> pickMultipleImages() async {
   List<File> images = [];
   final ImagePicker picker = ImagePicker();
   final imageFiles = await picker.pickMultiImage();
@@ -26,7 +26,7 @@ Future<List<File>> pickImage() async {
   return images;
 }
 
-Future<File?> pickProfileImage() async {
+Future<File?> pickImage() async {
   final ImagePicker picker = ImagePicker();
   final imageFile = await picker.pickImage(
     source: ImageSource.gallery,
