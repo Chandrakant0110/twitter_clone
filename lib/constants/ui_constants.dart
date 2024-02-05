@@ -9,10 +9,27 @@ class UIConstants {
   static AppBar appBar() {
     return AppBar(
       title: SvgPicture.asset(
-        AssetsConstants.twitterLogo,
-        color: Pallete.blueColor,
+        AssetsConstants.twitterXLogo,
+        color: Pallete.whiteColor,
+        // AssetsConstants.twitterLogo,
+        // color: Pallete.blueColor,
       ),
       centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.settings,
+            size: 25,
+          ),
+        ),
+      ],
+      // leading: IconButton(
+      //   onPressed: () {},
+      //   icon: const Icon(
+      //     Icons.image_outlined,
+      //   ),
+      // ),
     );
   }
 
