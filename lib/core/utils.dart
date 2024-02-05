@@ -18,10 +18,21 @@ Future<List<File>> pickImage() async {
   List<File> images = [];
   final ImagePicker picker = ImagePicker();
   final imageFiles = await picker.pickMultiImage();
-  if (imageFiles.isNotEmpty) { 
+  if (imageFiles.isNotEmpty) {
     for (final image in imageFiles) {
       images.add(File(image.path));
     }
   }
   return images;
+}
+
+Future<File?> pickProfileImage() async {
+  final ImagePicker picker = ImagePicker();
+  final imageFile = await picker.pickImage(
+    source: ImageSource.gallery,
+  );
+  if (imageFile != null) {
+    return File(imageFile.path);
+  }
+  return null;
 }
