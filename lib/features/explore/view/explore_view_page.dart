@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/features/explore/controller/explore_controller.dart';
+import 'package:twitter_clone/features/explore/widgets/search_tile.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class ExploreViewPage extends ConsumerStatefulWidget {
@@ -12,6 +15,7 @@ class ExploreViewPage extends ConsumerStatefulWidget {
 
 class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
   final TextEditingController searchController = TextEditingController();
+  bool isShowUsers = false;
 
   @override
   void dispose() {
@@ -31,13 +35,19 @@ class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
 
     return Scaffold(
       appBar: AppBar(
-        // leading: const Icon(Icons.abc),
         title: SizedBox(
           height: 50,
           child: TextField(
             controller: searchController,
+            onSubmitted: (value) {
+              setState(() {
+                isShowUsers = true;
+              });
+            },
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(10).copyWith(left: 20),
+              contentPadding: const EdgeInsets.all(10).copyWith(
+                left: 20,
+              ),
               fillColor: Pallete.searchBarColor,
               filled: true,
               enabledBorder: appBarTextFieldBorder,
@@ -47,6 +57,23 @@ class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
           ),
         ),
       ),
+      body: isShowUsers
+          ? ref.watch(searchUserProvider(searchController.text)).when(
+                data: (users) {
+                  return ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final user = users[index];
+                      return SearchTile(userModel: user);
+                    },
+                  );
+                },
+                error: (error, st) => ErrorText(
+                  error: error.toString(),
+                ),
+                loading: () => const Loader(),
+              )
+          : const SizedBox(),
     );
   }
 }
