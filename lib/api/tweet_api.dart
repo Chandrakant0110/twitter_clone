@@ -62,6 +62,9 @@ class TweetAPI implements ITweetAPI {
 
   @override
   Stream<RealtimeMessage> getLatestTweet() {
+    print('ye hai tweet api ka channel  == ${_realtime.subscribe([
+          'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
+        ]).stream}');
     return _realtime.subscribe([
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
     ]).stream;

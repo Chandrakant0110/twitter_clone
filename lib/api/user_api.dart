@@ -10,6 +10,7 @@ import 'package:twitter_clone/models/user_model.dart';
 final userAPIProvider = Provider((ref) {
   return UserAPI(
     db: ref.watch(appwriteDatabaseProvider),
+    realtime: ref.watch(appwriteRealtimeProvider),
   );
 });
 
@@ -18,11 +19,16 @@ abstract class IUserAPI {
   Future<model.Document> getUserData(String uID);
   Future<List<model.Document>> searchUserByName(String name);
   FutureEitherVoid updateUserData(UserModel userModel);
+  Stream<RealtimeMessage> getLatestUserProfileData(String uid);
 }
 
 class UserAPI implements IUserAPI {
   final Databases _db;
-  const UserAPI({required Databases db}) : _db = db;
+  final Realtime _realtime;
+
+  const UserAPI({required Databases db, required Realtime realtime})
+      : _realtime = realtime,
+        _db = db;
   @override
   FutureEitherVoid saveUserData(UserModel userModel) async {
     try {
@@ -80,5 +86,16 @@ class UserAPI implements IUserAPI {
     } catch (e, st) {
       return left(Failure(e.toString(), st));
     }
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestUserProfileData(String uid) {
+    // print(
+    //     'this is the latestUserProfileData from userApi data - ${_realtime.subscribe([
+    //               'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents'
+    //             ]).stream.toString()}');
+    return _realtime.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents.$uid'
+    ]).stream;
   }
 }

@@ -47,6 +47,8 @@ class AuthController extends StateNotifier<bool> {
         super(false);
 
   Future<model.User?> currentUser() => _authAPI.currentUserAccount();
+ 
+ 
   // state = isLoading
   void signUp({
     required String email,
