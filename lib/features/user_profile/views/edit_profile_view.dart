@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/api/user_api.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class EditProfileView extends ConsumerStatefulWidget {
@@ -21,10 +23,23 @@ class EditProfileView extends ConsumerStatefulWidget {
 }
 
 class _EditProfileViewState extends ConsumerState<EditProfileView> {
-  final nameController = TextEditingController();
-  final bioController = TextEditingController();
+  late TextEditingController nameController;
+  late TextEditingController bioController;
+
   File? bannerFile;
   File? profileFile;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(
+      text: ref.read(currentUserDetailsProvider).value?.name ?? '',
+    );
+    bioController = TextEditingController(
+      text: ref.read(currentUserDetailsProvider).value?.bio ?? '',
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -53,13 +68,27 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserDetailsProvider).value;
+    final isLoading = ref.watch(userProfileControllerProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
         // centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              ref
+                  .read(userProfileControllerProvider.notifier)
+                  .updateUserProfile(
+                    userModel: user!.copyWith(
+                      name: nameController.text,
+                      bio: bioController.text,
+                    ),
+                    context: context,
+                    bannerFile: bannerFile,
+                    profileFile: profileFile,
+                  );
+            },
             child: const Text(
               'Save',
               style: TextStyle(
@@ -69,7 +98,7 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
           ),
         ],
       ),
-      body: user == null
+      body: isLoading || user == null
           ? const Loader()
           : Column(
               children: [
