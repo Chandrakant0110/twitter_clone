@@ -195,9 +195,16 @@ class UserProfile extends ConsumerWidget {
                                       startingPoint + 10,
                                       endPoint); //10 = no. of characters in "documents."
                                   // fetching that particular tweet
-                                  var tweet = tweets
-                                      .where((element) => element.id == tweetID)
-                                      .first;
+                                  var tweet;
+                                  try {
+                                    tweet = tweets
+                                        .where(
+                                            (element) => element.id == tweetID)
+                                        .first;
+                                  } catch (e) {
+                                    print(e.toString());
+                                  }
+
                                   // fetching the tweetIndex before removing the tweet
                                   final tweetIndex = tweets.indexOf(tweet);
                                   // Step 2

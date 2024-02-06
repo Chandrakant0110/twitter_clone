@@ -33,7 +33,7 @@ final getUserTweetsProvider = FutureProvider.family((ref, String uid) {
 });
 
 final getLatestUserProfileDataProvider =
-    StreamProvider.family((ref, String uid) {
+    StreamProvider.family.autoDispose((ref, String uid) {
   final userAPI = ref.watch(userAPIProvider);
   return userAPI.getLatestUserProfileData(uid);
 });

@@ -8,7 +8,7 @@ final notificationControllerProvider =
   return NotificationController(ref.watch(notificationAPIProvider));
 });
 
-final getLatestNotificationProvider = StreamProvider((ref) {
+final getLatestNotificationProvider = StreamProvider.autoDispose((ref) {
   final norificationAPI = ref.watch(notificationAPIProvider);
   return norificationAPI.getLatestNotification();
 });

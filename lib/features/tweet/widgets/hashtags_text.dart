@@ -20,7 +20,7 @@ class HashtagText extends StatelessWidget {
             text: '$element ',
             style: const TextStyle(
               color: Pallete.blueColor,
-              fontSize: 15,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -31,7 +31,7 @@ class HashtagText extends StatelessWidget {
             text: '$element ',
             style: const TextStyle(
               color: Pallete.blueColor,
-              fontSize: 15,
+              fontSize: 18,
               // fontWeight: FontWeight.bold,
             ),
           ),
@@ -42,7 +42,7 @@ class HashtagText extends StatelessWidget {
             text: '$element ',
             style: const TextStyle(
               color: Pallete.greyColor,
-              fontSize: 15,
+              fontSize: 18,
             ),
           ),
         );
