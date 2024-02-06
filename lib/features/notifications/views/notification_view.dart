@@ -4,6 +4,7 @@ import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/notifications/controller/notification_controller.dart';
+import 'package:twitter_clone/features/notifications/widgets/notification_tile.dart';
 import 'package:twitter_clone/models/notification_model.dart' as model;
 
 class NotificationView extends ConsumerWidget {
@@ -39,8 +40,8 @@ class NotificationView extends ConsumerWidget {
                             itemCount: notifications.length,
                             itemBuilder: (context, index) {
                               final notifcation = notifications[index];
-                              return Text(
-                                notifcation.text,
+                              return NotificationTile(
+                                notification: notifcation,
                               );
                             },
                           );
@@ -53,8 +54,8 @@ class NotificationView extends ConsumerWidget {
                             itemCount: notifications.length,
                             itemBuilder: (context, index) {
                               final notifcation = notifications[index];
-                              return Text(
-                                notifcation.text,
+                              return NotificationTile(
+                                notification: notifcation,
                               );
                             },
                           );
