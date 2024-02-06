@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/constants/appwrite_constants.dart';
@@ -10,7 +11,7 @@ import 'package:twitter_clone/models/user_model.dart';
 final userAPIProvider = Provider((ref) {
   return UserAPI(
     db: ref.watch(appwriteDatabaseProvider),
-    realtime: ref.watch(appwriteRealtimeProvider),
+    realtimes: ref.watch(appwriteRealtimeUserProfileProvider),
   );
 });
 
@@ -26,10 +27,10 @@ abstract class IUserAPI {
 
 class UserAPI implements IUserAPI {
   final Databases _db;
-  final Realtime _realtime;
+  final Realtime _realtimes;
 
-  const UserAPI({required Databases db, required Realtime realtime})
-      : _realtime = realtime,
+  const UserAPI({required Databases db, required Realtime realtimes})
+      : _realtimes = realtimes,
         _db = db;
   @override
   FutureEitherVoid saveUserData(UserModel userModel) async {
@@ -92,8 +93,8 @@ class UserAPI implements IUserAPI {
 
   @override
   Stream<RealtimeMessage> getLatestUserProfileData(String uid) {
-    return _realtime.subscribe([
-      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents.$uid'
+    return _realtimes.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollections}.documents'
     ]).stream;
   }
 

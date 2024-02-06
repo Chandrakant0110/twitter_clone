@@ -11,7 +11,7 @@ import '../constants/appwrite_constants.dart';
 final tweetAPIProvider = Provider((ref) {
   return TweetAPI(
     db: ref.watch(appwriteDatabaseProvider),
-    realtime: ref.watch(appwriteRealtimeProvider),
+    realtime: ref.watch(appwriteRealtimeTweetsProvider),
   );
 });
 
@@ -62,9 +62,6 @@ class TweetAPI implements ITweetAPI {
 
   @override
   Stream<RealtimeMessage> getLatestTweet() {
-    // print('ye hai tweet api ka channel  == ${_realtime.subscribe([
-    //       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
-    //     ]).stream}');
     return _realtime.subscribe([
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
     ]).stream;

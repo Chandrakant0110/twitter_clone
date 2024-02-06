@@ -10,7 +10,7 @@ import 'package:twitter_clone/models/notification_model.dart';
 final notificationAPIProvider = Provider((ref) {
   return NotificationAPI(
     databases: ref.watch(appwriteDatabaseProvider),
-    realtime: ref.watch(appwriteRealtimeProvider),
+    realtime: ref.watch(appwriteRealtimeNotificationProvider),
   );
 });
 
@@ -67,6 +67,4 @@ class NotificationAPI extends INotificationAPI {
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.notificationsCollection}.documents'
     ]).stream;
   }
-
-  
 }
