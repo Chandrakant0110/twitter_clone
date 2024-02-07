@@ -36,6 +36,7 @@ class AuthAPI implements IAuthAPI {
   @override
   Future<model.User?> currentUserAccount() async {
     try {
+      print(_account.getPrefs().then((value) => print(value)));
       return await _account.get();
     } on AppwriteException {
       return null;
@@ -56,6 +57,7 @@ class AuthAPI implements IAuthAPI {
         email: email,
         password: password,
       );
+
       return right(account);
     } on AppwriteException catch (e, stackTrace) {
       return left(

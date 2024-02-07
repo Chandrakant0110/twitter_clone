@@ -39,9 +39,19 @@ final getRepliesToTweetProvider = FutureProvider.family((ref, Tweet tweet) {
   return tweetController.getRepliesToTweet(tweet);
 });
 
+final getTweetsByHashtagProvider = FutureProvider.family((ref, String hashtag) {
+  final tweetController = ref.watch(tweetControllerProvider.notifier);
+  return tweetController.getTweetsByHashtag(hashtag);
+});
+
 final getLatestTweetProvider = StreamProvider.autoDispose((ref) {
   final tweetAPI = ref.watch(tweetAPIProvider);
   return tweetAPI.getLatestTweet();
+});
+
+final getLatestTweetByHashtagProvider = StreamProvider.autoDispose((ref) {
+  final tweetAPI = ref.watch(tweetAPIProvider);
+  return tweetAPI.getLatestTweetByHashtag();
 });
 
 final getTweetByIdProvider = FutureProvider.family((ref, String id) async {
@@ -194,7 +204,7 @@ class TweetController extends StateNotifier<bool> {
         repliedTo: '[]');
 
     final res = await _tweetAPI.shareTweet(tweet);
-    state = false;
+    
     res.fold((l) => showSnackBar(context, l.message), (r) {
       if (repliedToUserId.isNotEmpty) {
         _notificationController.createNotification(
@@ -205,6 +215,7 @@ class TweetController extends StateNotifier<bool> {
         );
       }
     });
+    state = false;
   }
 
   Future<void> _shareTextTweet({
@@ -275,6 +286,11 @@ class TweetController extends StateNotifier<bool> {
 
   Future<List<Tweet>> getRepliesToTweet(Tweet tweet) async {
     final documents = await _tweetAPI.getRepliesToTweet(tweet);
+    return documents.map((tweet) => Tweet.fromMap(tweet.data)).toList();
+  }
+
+  Future<List<Tweet>> getTweetsByHashtag(String hashtag) async {
+    final documents = await _tweetAPI.getTweetsByHashtag(hashtag);
     return documents.map((tweet) => Tweet.fromMap(tweet.data)).toList();
   }
 

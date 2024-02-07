@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
@@ -24,6 +23,8 @@ abstract class ITweetAPI {
   Future<List<Document>> getRepliesToTweet(Tweet tweet);
   Future<Document> getTweetById(String uid);
   Future<List<Document>> getUserTweets(String uid);
+  Future<List<Document>> getTweetsByHashtag(String uid);
+  Stream<RealtimeMessage> getLatestTweetByHashtag();
 }
 
 class TweetAPI implements ITweetAPI {
@@ -62,6 +63,13 @@ class TweetAPI implements ITweetAPI {
 
   @override
   Stream<RealtimeMessage> getLatestTweet() {
+    return _realtime.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
+    ]).stream;
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestTweetByHashtag() {
     return _realtime.subscribe([
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollections}.documents'
     ]).stream;
@@ -129,6 +137,18 @@ class TweetAPI implements ITweetAPI {
       collectionId: AppWriteConstants.tweetCollections,
       queries: [
         Query.equal('uid', uid),
+      ],
+    );
+    return documents.documents;
+  }
+
+  @override
+  Future<List<Document>> getTweetsByHashtag(String hashtag) async {
+    final documents = await _db.listDocuments(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.tweetCollections,
+      queries: [
+        Query.search('hashtags', hashtag),
       ],
     );
     return documents.documents;
