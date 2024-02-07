@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/constants/constants.dart';
+import 'package:twitter_clone/features/home/widgets/side_drawer.dart';
 import 'package:twitter_clone/features/tweet/views/create_tweet.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
@@ -36,9 +37,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         appBar: _page == 0 ? appBar : null,
-        // drawer: const Drawer(
-        //   child: Text('Icon'),
-        // ),
+        drawer: const SideDrawer(),
         body: IndexedStack(
           index: _page,
           children: UIConstants.bottomTabBarPages,
