@@ -1,4 +1,3 @@
-
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -88,7 +87,8 @@ class TweetCard extends ConsumerWidget {
                                   Row(
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.only(
+                                        margin: EdgeInsets.only(
+                                          right: user.isTwitterBlue ? 1 : 5,
                                           left: 5,
                                         ),
                                         child: Text(
@@ -99,9 +99,14 @@ class TweetCard extends ConsumerWidget {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      if (user.isTwitterBlue)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 5.0),
+                                          child: SvgPicture.asset(
+                                            AssetsConstants.verifiedIcon,
+                                          ),
+                                        ),
                                       Text(
                                         '@${user.name} .  ${timeago.format(
                                           tweet.tweetedAt,
