@@ -92,6 +92,7 @@ class AuthAPI implements IAuthAPI {
     }
   }
 
+// logout function
   @override
   FutureEitherVoid logout() async {
     try {
