@@ -1,16 +1,50 @@
-# twitter_clone
+# Twitter Clone
 
-A new Flutter project.
+Source Code for Full Stack Twitter App - Works on Android, iOS, Windows, MacOS and Web!
 
-## Getting Started
+## Features
+- Sign Up With Email, Password
+- Sign In With Email, Password
+- Tweeting Text
+- Tweeting Image
+- Tweeting Link
+- Hashtag identification & storage
+- Displaying tweets
+- Liking tweet
+- Retweeting
+- Commenting/Replying
+- Follow user
+- Search users
+- Display followers, following, recent tweets
+- Edit User Profile
+- Show tweets that have 1 hashtag
+- Twitter Blue
+- Notifications tab (replied to you, followed you, like your pic, retweeted)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
+After cloning this repository, migrate to `flutter_twitter_clone` folder. Then, follow the following steps:
+- Install Appwrite (Installation Steps [here](https://appwrite.io/docs/installation )
+- Create Appwrite Project Locally
+- Create Android & iOS Apps in the Dashboard
+- Create Appwrite Database, Storage
+- Modify Roles in Auth, Database, Storage
+- Create Attributes for Tweets, Users, Notifications Collection
+- Copy the required ids & change it in `lib/constants/appwrite_constants.dart`
+- Change your IP Address in `lib/constants/appwrite_constants.dart`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Then run the following commands to run your app:
+```bash
+  flutter pub get
+  open -a simulator (to get iOS Simulator)
+  flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Used
+**Server**: Appwrite Auth, Appwrite Storage, Appwrite Database, Appwrite Realtime
+
+**Client**: Flutter, Riverpod
+    
+## Feedback
+
+If you have any feedback, please reach out to me at chandrakant.code@gmail.com
