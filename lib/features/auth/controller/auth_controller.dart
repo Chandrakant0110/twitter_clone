@@ -5,6 +5,7 @@ import 'package:twitter_clone/api/auth_api.dart';
 import 'package:twitter_clone/api/user_api.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/view/login_view.dart';
+import 'package:twitter_clone/features/auth/view/signup_view.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/models/user_model.dart';
 
@@ -41,28 +42,35 @@ final currentUserAccountProvider = FutureProvider((ref) {
 class AuthController extends StateNotifier<bool> {
   final AuthAPI _authAPI;
   final UserAPI _userAPI;
-  AuthController({required AuthAPI authAPI, required UserAPI userAPI})
-      : _authAPI = authAPI,
+  AuthController({
+    required AuthAPI authAPI,
+    required UserAPI userAPI,
+  })  : _authAPI = authAPI,
         _userAPI = userAPI,
         super(false);
+  // state = isLoading
 
   Future<model.User?> currentUser() => _authAPI.currentUserAccount();
 
-  // state = isLoading
   void signUp({
+    required String username,
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     state = true;
-    final res = await _authAPI.signUp(email: email, password: password);
+    final res = await _authAPI.signUp(
+      username: username,
+      email: email,
+      password: password,
+    );
     state = false;
     res.fold(
       (l) => showSnackBar(context, l.message),
       (r) async {
         UserModel userModel = UserModel(
           email: email,
-          name: getNameFromEmail(email),
+          name: username,
           followers: const [],
           following: const [],
           profilePic: '',
@@ -72,13 +80,10 @@ class AuthController extends StateNotifier<bool> {
           isTwitterBlue: false,
         );
         final res2 = await _userAPI.saveUserData(userModel);
-        res2.fold(
-          (l) => showSnackBar(context, l.message),
-          (r) {
-            showSnackBar(context, 'Account created! Please Login.');
-            Navigator.push(context, LoginView.route());
-          },
-        );
+        res2.fold((l) => showSnackBar(context, l.message), (r) {
+          showSnackBar(context, 'Accounted created! Please login.');
+          Navigator.pushReplacement(context, LoginView.route());
+        });
       },
     );
   }
@@ -110,12 +115,12 @@ class AuthController extends StateNotifier<bool> {
     return updatedUser;
   }
 
-  Future<void> logOut(BuildContext context) async {
+  void logout(BuildContext context) async {
     final res = await _authAPI.logout();
     res.fold((l) => null, (r) {
       Navigator.pushAndRemoveUntil(
         context,
-        LoginView.route(),
+        SignUpView.route(),
         (route) => false,
       );
     });

@@ -1,9 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/core/providers.dart';
+import 'package:twitter_clone/features/auth/view/signup_view.dart';
+import 'package:twitter_clone/models/user_model.dart';
 
 // want to signup ,want to get user account --> Account  (Services)
 // want to access usrer  related data --> User class (previously it was model.Account)   // updated in the latest version of appwrite
@@ -17,6 +20,7 @@ final authAPIProvider = Provider((ref) {
 //  This is the base structure of the file (THE OG ABSTRACT CLASS)
 abstract class IAuthAPI {
   FutureEither<model.User> signUp({
+    required String username,
     required String email,
     required String password,
   });
@@ -36,7 +40,8 @@ class AuthAPI implements IAuthAPI {
   @override
   Future<model.User?> currentUserAccount() async {
     try {
-      print(_account.getPrefs().then((value) => print(value)));
+      // print(_account.getPrefs().then((value) => print(value)));
+      // final res = _account.getSession(sessionId: 'current');
       return await _account.get();
     } on AppwriteException {
       return null;
@@ -47,6 +52,7 @@ class AuthAPI implements IAuthAPI {
 
   @override
   FutureEither<model.User> signUp({
+    required String username,
     required String email,
     required String password,
   }) async {
@@ -54,6 +60,7 @@ class AuthAPI implements IAuthAPI {
       print('sign-up api call sucess');
       final account = await _account.create(
         userId: ID.unique(),
+        name: username,
         email: email,
         password: password,
       );
