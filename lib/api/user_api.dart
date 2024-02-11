@@ -35,7 +35,7 @@ class UserAPI implements IUserAPI {
   @override
   FutureEitherVoid saveUserData(UserModel userModel) async {
     try {
-      await _db.updateDocument(
+      await _db.createDocument(
         databaseId: AppWriteConstants.databaseId,
         collectionId: AppWriteConstants.userCollections,
         documentId: userModel.uid,
