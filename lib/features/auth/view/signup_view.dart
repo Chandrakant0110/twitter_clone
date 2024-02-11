@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/common/loadin_page.dart';
 import 'package:twitter_clone/constants/constants.dart';
@@ -25,7 +26,13 @@ class SignUpView extends ConsumerStatefulWidget {
 }
 
 class _SignUpViewState extends ConsumerState<SignUpView> {
-  final appBar = UIConstants.appBar();
+  final appBar = AppBar(
+    title: SvgPicture.asset(
+      AssetsConstants.twitterXLogo,
+      color: Pallete.whiteColor,
+    ),
+    centerTitle: true,
+  );
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -40,6 +47,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
 
   void onSignUp() {
     ref.read(authControllerProvider.notifier).signUp(
+          username: _usernameController.text,
           email: _emailController.text,
           password: _passwordController.text,
           context: context,
@@ -100,6 +108,9 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                       RichText(
                         text: TextSpan(
                           text: "Already have an account?",
+                          style: TextStyle(
+                            color: Pallete.greyColor,
+                          ),
                           children: [
                             TextSpan(
                                 text: ' Login',

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/common/loadin_page.dart';
 import 'package:twitter_clone/common/rounded_button.dart';
 import 'package:twitter_clone/constants/constants.dart';
@@ -20,7 +21,13 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
-  final appbar = UIConstants.appBar();
+  final appBar = AppBar(
+    title: SvgPicture.asset(
+      AssetsConstants.twitterXLogo,
+      color: Pallete.whiteColor,
+    ),
+    centerTitle: true,
+  );
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -44,7 +51,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final isLoading = ref.watch(authControllerProvider);
 
     return Scaffold(
-      appBar: appbar,
+      appBar: appBar,
       body: isLoading
           ? const Loader()
           : Center(
@@ -78,6 +85,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         text: TextSpan(
                           text: "Don't have an account?",
                           style: const TextStyle(
+                            color: Pallete.greyColor,
                             fontSize: 16,
                           ),
                           children: [
