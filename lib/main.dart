@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
-import 'package:twitter_clone/common/loadin_page.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/auth/view/signup_view.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
-import 'package:twitter_clone/testing/testing.dart';
 import 'package:twitter_clone/theme/app_theme.dart';
 
 void main() {
@@ -21,6 +19,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
         title: 'Twitter',
         theme: AppTheme.theme,
+        debugShowCheckedModeBanner: false,
         home: ref.watch(currentUserAccountProvider).when(
               data: (user) {
                 // print(user!.email);
