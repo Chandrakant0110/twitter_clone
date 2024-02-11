@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -134,8 +133,10 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                                   radius: 40,
                                 )
                               : CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user.profilePic),
+                                  backgroundImage: user.profilePic.isEmpty
+                                      ? const NetworkImage(
+                                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+                                      : NetworkImage(user.profilePic),
                                   radius: 40,
                                 ),
                         ),

@@ -1,14 +1,10 @@
-import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:like_button/like_button.dart';
 import 'package:twitter_clone/common/common.dart';
-import 'package:twitter_clone/constants/appwrite_constants.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/core/enum/tweet_type_enum.dart';
-import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/features/tweet/views/twitter_reply_screen.dart';
@@ -16,8 +12,8 @@ import 'package:twitter_clone/features/tweet/widgets/carousel_image.dart';
 import 'package:twitter_clone/features/tweet/widgets/hashtags_text.dart';
 import 'package:twitter_clone/features/tweet/widgets/tweet_icon_buttons.dart';
 import 'package:twitter_clone/features/user_profile/views/user_profile_view.dart';
-import 'package:twitter_clone/features/user_profile/widget/user_profile.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
+import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -30,10 +26,12 @@ class TweetCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currUser = ref.watch(currentUserDetailsProvider).value;
+    final AsyncValue<UserModel?> currentUserDetails =
+        ref.watch(currentUserDetailsProvider);
+    final currUser = currentUserDetails.value;
     return currUser == null
-        ? const SizedBox(
-            height: 1,
+        ? const Text(
+            'Please restart the app',
           )
         : ref.watch(userDetailsProvider(tweet.uid)).when(
             data: (user) => GestureDetector(
@@ -55,8 +53,10 @@ class TweetCard extends ConsumerWidget {
                                   );
                                 },
                                 child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user.profilePic),
+                                  backgroundImage: user.profilePic.isEmpty
+                                      ? const NetworkImage(
+                                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+                                      : NetworkImage(user.profilePic),
                                   radius: 25,
                                 ),
                               ),
@@ -117,6 +117,12 @@ class TweetCard extends ConsumerWidget {
                                           color: Pallete.greyColor,
                                         ),
                                       ),
+                                      IconButton(
+                                          padding:
+                                              const EdgeInsets.only(left: 25),
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                              Icons.more_vert_rounded))
                                     ],
                                   ),
                                   if (tweet.repliedTo.isNotEmpty)
@@ -154,9 +160,14 @@ class TweetCard extends ConsumerWidget {
                                               );
                                             },
                                             error: (error, stackTrace) {
-                                              return ErrorText(
-                                                error: error.toString(),
+                                              print(
+                                                  'tweet card file me kuch error hai.. ${error.toString()}');
+                                              return const SizedBox(
+                                                height: 1,
                                               );
+                                              // return ErrorText(
+                                              //   error: error.toString(),
+                                              // );
                                             },
                                             loading: () => const SizedBox()),
 
@@ -209,9 +220,6 @@ class TweetCard extends ConsumerWidget {
                                         TweetIconButton(
                                           pathName: AssetsConstants.retweetIcon,
                                           text: tweet.reshareCount.toString(),
-                                          textColor: tweet.retweetedBy.isEmpty
-                                              ? true
-                                              : null,
                                           onTap: () {
                                             ref
                                                 .read(tweetControllerProvider

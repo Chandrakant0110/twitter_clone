@@ -3,8 +3,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:twitter_clone/api/notification_api.dart';
 import 'package:twitter_clone/api/storage_api.dart';
 import 'package:twitter_clone/api/tweet_api.dart';
 import 'package:twitter_clone/core/enum/notification_type_enum.dart';

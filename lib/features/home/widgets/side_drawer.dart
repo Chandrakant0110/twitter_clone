@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/constants/constants.dart';
+import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/payment/payment_page.dart';
 import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
 import 'package:twitter_clone/features/user_profile/views/user_profile_view.dart';
 import 'package:twitter_clone/theme/theme.dart';
@@ -51,15 +53,11 @@ class SideDrawer extends ConsumerWidget {
                 ),
               ),
               onTap: () {
-                ref
-                    .read(userProfileControllerProvider.notifier)
-                    .updateUserProfile(
-                        userModel: currUser!.copyWith(
-                          isTwitterBlue: true,
-                        ),
-                        context: context,
-                        bannerFile: null,
-                        profileFile: null);
+                if (currUser!.isTwitterBlue) {
+                  showSnackBar(context, 'Already Verified');
+                } else {
+                  Navigator.push(context, RazorPayPage.route());
+                }
               },
             ),
             ListTile(
@@ -74,7 +72,7 @@ class SideDrawer extends ConsumerWidget {
                 ),
               ),
               onTap: () {
-                ref.read(authControllerProvider.notifier).logOut(context);
+                ref.read(authControllerProvider.notifier).logout(context);
               },
             ),
           ],

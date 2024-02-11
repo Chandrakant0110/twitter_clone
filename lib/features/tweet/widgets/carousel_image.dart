@@ -29,7 +29,7 @@ class _CarouselImageState extends State<CarouselImage> {
                 margin: const EdgeInsets.all(10),
                 child: Image.network(
                   link,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               );
             }).toList(),

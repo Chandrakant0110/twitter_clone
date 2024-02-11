@@ -96,8 +96,10 @@ class _CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(currentUser.profilePic),
+                            backgroundImage: currentUser.profilePic.isEmpty
+                                ? const NetworkImage(
+                                    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+                                : NetworkImage(currentUser.profilePic),
                             radius: 28,
                           ),
                           const SizedBox(

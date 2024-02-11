@@ -17,16 +17,13 @@ final authControllerProvider =
   );
 });
 
-final currentUserDetailsProvider = FutureProvider((ref) {
-  final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
-  print('$currentUserId');
-  final userDetails = ref.watch(userDetailsProvider(currentUserId));
-  if (userDetails != null) {
-    print('Userdetails mil hai bhai');
-    print(userDetails);
+final currentUserDetailsProvider = FutureProvider<UserModel?>((ref) async {
+  final currentUserId = ref.watch(currentUserAccountProvider).value?.$id;
+  if (currentUserId != null) {
+    final userDetails = await ref.watch(userDetailsProvider(currentUserId).future);
+    return userDetails;
   }
-
-  return userDetails.value;
+  return null;
 });
 
 final userDetailsProvider = FutureProvider.family((ref, String uid) {
