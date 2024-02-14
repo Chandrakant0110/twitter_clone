@@ -98,71 +98,73 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
       ),
       body: isLoading || user == null
           ? const Loader()
-          : Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: selectBannerImage,
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: bannerFile != null
-                              ? Image.file(bannerFile!)
-                              : user.bannerPic.isEmpty
-                                  ? Container(
-                                      color: Pallete.blueColor,
-                                    )
-                                  : Image.network(
-                                      user.bannerPic,
-                                      fit: BoxFit.fitWidth,
-                                    ),
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: selectBannerImage,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: bannerFile != null
+                                ? Image.file(bannerFile!)
+                                : user.bannerPic.isEmpty
+                                    ? Container(
+                                        color: Pallete.blueColor,
+                                      )
+                                    : Image.network(
+                                        user.bannerPic,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        bottom: 20,
-                        left: 20,
-                        child: GestureDetector(
-                          onTap: selectProfileImage,
-                          child: profileFile != null
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(profileFile!),
-                                  radius: 40,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: user.profilePic.isEmpty
-                                      ? const NetworkImage(
-                                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
-                                      : NetworkImage(user.profilePic),
-                                  radius: 40,
-                                ),
+                        Positioned(
+                          bottom: 20,
+                          left: 20,
+                          child: GestureDetector(
+                            onTap: selectProfileImage,
+                            child: profileFile != null
+                                ? CircleAvatar(
+                                    backgroundImage: FileImage(profileFile!),
+                                    radius: 40,
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: user.profilePic.isEmpty
+                                        ? const NetworkImage(
+                                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+                                        : NetworkImage(user.profilePic),
+                                    radius: 40,
+                                  ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Name',
-                    contentPadding: EdgeInsets.all(18),
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      hintText: 'Name',
+                      contentPadding: EdgeInsets.all(18),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: bioController,
-                  decoration: const InputDecoration(
-                    hintText: 'Bio',
-                    contentPadding: EdgeInsets.all(18),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  maxLines: 4,
-                ),
-              ],
+                  TextField(
+                    controller: bioController,
+                    decoration: const InputDecoration(
+                      hintText: 'Bio',
+                      contentPadding: EdgeInsets.all(18),
+                    ),
+                    maxLines: 4,
+                  ),
+                ],
+              ),
             ),
     );
   }
