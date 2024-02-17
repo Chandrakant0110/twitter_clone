@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
-import 'package:twitter_clone/features/auth/view/signup_view.dart';
+import 'package:twitter_clone/features/auth/view/landing_view.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/theme/app_theme.dart';
 
@@ -17,24 +17,25 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-        title: 'Twitter',
-        theme: AppTheme.theme,
-        debugShowCheckedModeBanner: false,
-        home: ref.watch(currentUserAccountProvider).when(
-              data: (user) {
-                // print(user!.email);
-                if (user != null) {
-                  return const HomeView();
-                }
-                return const SignUpView();
-                // return const PickImageFromPhone();
-              },
-              error: (error, stackTrace) => ErrorPage(
-                error: error.toString(),
-              ),
-              loading: () => const LoadingPage(),
-            )
-        // home: const Testing(),
-        );
+      title: 'Twitter',
+      theme: AppTheme.theme,
+      debugShowCheckedModeBanner: false,
+
+      home: ref.watch(currentUserAccountProvider).when(
+            data: (user) {
+              // print(user!.email);
+              if (user != null) {
+                return const HomeView();
+              }
+              return const LandingView();
+              // return const LandingView();
+            },
+            error: (error, stackTrace) => ErrorPage(
+              error: error.toString(),
+            ),
+            loading: () => const LoadingPage(),
+          ),
+      // home: const LandingView(),
+    );
   }
 }
