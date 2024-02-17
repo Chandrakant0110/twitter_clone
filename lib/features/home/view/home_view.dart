@@ -68,11 +68,23 @@ class _HomeViewState extends State<HomeView> {
                 color: Pallete.whiteColor,
               ),
             ),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.terminal_outlined,
+                color: Pallete.whiteColor,
+              ),
+            ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                _page == 2
+                _page == 3
                     ? AssetsConstants.notifFilledIcon
                     : AssetsConstants.notifOutlinedIcon,
+                color: Pallete.whiteColor,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _page == 4 ? Icons.email : Icons.email_outlined,
                 color: Pallete.whiteColor,
               ),
             ),

@@ -62,76 +62,74 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
         ? const LoadingPage()
         : Scaffold(
             appBar: appBar,
-            body: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    children: [
-                      AuthField(
-                        controller: _usernameController,
-                        hintText: 'Username',
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      '   Create your account',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // Textfield 1
-                      AuthField(
-                        controller: _emailController,
-                        hintText: 'Email Address',
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // Password textfield
-                      AuthField(
-                        controller: _passwordController,
-                        hintText: 'Password',
-                        obSecureText: true,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // Button
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: RoundedButton(
-                          onTap: onSignUp,
-                          label: 'Done',
-                          backgroundColor: Pallete.whiteColor,
-                          textColor: Pallete.backgroundColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          text: "Already have an account?",
-                          style: TextStyle(
-                            color: Pallete.greyColor,
+                    ),
+                    const SizedBox(
+                      height: 150,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          AuthField(
+                            obSecureText: false,
+                            controller: _usernameController,
+                            hintText: 'Username',
                           ),
-                          children: [
-                            TextSpan(
-                                text: ' Login',
-                                style: const TextStyle(
-                                  color: Pallete.blueColor,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    print('Login clicked.');
-                                    Navigator.pushReplacement(
-                                      context,
-                                      LoginView.route(),
-                                    );
-                                  }),
-                          ],
-                        ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          // Textfield 1
+                          AuthField(
+                            obSecureText: false,
+                            controller: _emailController,
+                            hintText: 'Email Address',
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          // Password textfield
+                          AuthField(
+                            controller: _passwordController,
+                            hintText: 'Password',
+                            obSecureText: true,
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
+            ),
+            bottomNavigationBar: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RoundedButton(
+                  onTap: onSignUp,
+                  label: 'Done',
+                  backgroundColor: Pallete.whiteColor,
+                  textColor: Pallete.backgroundColor,
+                ),
+              ],
             ),
           );
   }

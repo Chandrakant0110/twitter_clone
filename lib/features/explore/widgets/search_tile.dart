@@ -25,7 +25,12 @@ class SearchTile extends StatelessWidget {
         print('list tile  clicked for user-profile');
       },
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(userModel.profilePic),
+        backgroundImage: userModel.profilePic.isEmpty
+            ? const NetworkImage(
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+            : NetworkImage(
+                userModel.profilePic,
+              ),
         radius: 30,
       ),
       title: Text(
