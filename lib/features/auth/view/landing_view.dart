@@ -51,6 +51,7 @@ class _LandingViewState extends ConsumerState<LandingView> {
                 'See what\'s happening in the  world right now.',
                 style: TextStyle(
                   fontSize: 28,
+                  color: Pallete.whiteColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

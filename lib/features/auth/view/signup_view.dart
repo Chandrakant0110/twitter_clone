@@ -78,6 +78,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
+                        color: Pallete.whiteColor,
                       ),
                     ),
                     const SizedBox(
@@ -123,11 +124,17 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
             bottomNavigationBar: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RoundedButton(
-                  onTap: onSignUp,
-                  label: 'Done',
-                  backgroundColor: Pallete.whiteColor,
-                  textColor: Pallete.backgroundColor,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16.0,
+                    bottom: 4.0,
+                  ),
+                  child: RoundedButton(
+                    onTap: onSignUp,
+                    label: 'Done',
+                    backgroundColor: Pallete.whiteColor,
+                    textColor: Pallete.backgroundColor,
+                  ),
                 ),
               ],
             ),

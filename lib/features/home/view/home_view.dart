@@ -72,6 +72,7 @@ class _HomeViewState extends State<HomeView> {
               icon: Icon(
                 Icons.terminal_outlined,
                 color: Pallete.whiteColor,
+                size: 26,
               ),
             ),
             BottomNavigationBarItem(
@@ -86,6 +87,7 @@ class _HomeViewState extends State<HomeView> {
               icon: Icon(
                 _page == 4 ? Icons.email : Icons.email_outlined,
                 color: Pallete.whiteColor,
+                size: 26,
               ),
             ),
           ],

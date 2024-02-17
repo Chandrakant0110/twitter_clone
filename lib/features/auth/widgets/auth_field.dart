@@ -21,6 +21,8 @@ class AuthField extends StatelessWidget {
       height: 60,
       child: TextFormField(
         controller: controller,
+        
+        cursorColor: Pallete.whiteColor,
         obscureText: obSecureText,
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(

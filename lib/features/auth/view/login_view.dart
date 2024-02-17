@@ -78,6 +78,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
+                        color: Pallete.whiteColor,
                       ),
                     ),
                     const SizedBox(
@@ -101,7 +102,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ),
             ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 5.0, right: 5),
+        padding: const EdgeInsets.only(left: 12.0, right: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
