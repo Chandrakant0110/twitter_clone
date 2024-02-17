@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/home/widgets/side_drawer.dart';
 import 'package:twitter_clone/features/notifications/controller/notification_controller.dart';
 import 'package:twitter_clone/features/notifications/widgets/notification_tile.dart';
 import 'package:twitter_clone/models/notification_model.dart' as model;
@@ -15,10 +16,21 @@ class NotificationView extends ConsumerWidget {
     final currUser = ref.watch(currentUserDetailsProvider).value;
     return Scaffold(
       appBar: AppBar(
+        excludeHeaderSemantics: true,
         title: const Text(
           'Notifications',
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.settings_outlined,
+              size: 25,
+            ),
+          ),
+        ],
       ),
+      drawer: const SideDrawer(),
       body: currUser == null
           ? const Loader()
           : ref.watch(getNotificationsProvider(currUser.uid)).when(
