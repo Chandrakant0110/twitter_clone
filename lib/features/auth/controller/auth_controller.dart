@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/api/auth_api.dart';
 import 'package:twitter_clone/api/user_api.dart';
 import 'package:twitter_clone/core/utils.dart';
+import 'package:twitter_clone/features/auth/view/landing_view.dart';
 import 'package:twitter_clone/features/auth/view/login_view.dart';
 import 'package:twitter_clone/features/auth/view/signup_view.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
@@ -20,7 +21,8 @@ final authControllerProvider =
 final currentUserDetailsProvider = FutureProvider<UserModel?>((ref) async {
   final currentUserId = ref.watch(currentUserAccountProvider).value?.$id;
   if (currentUserId != null) {
-    final userDetails = await ref.watch(userDetailsProvider(currentUserId).future);
+    final userDetails =
+        await ref.watch(userDetailsProvider(currentUserId).future);
     return userDetails;
   }
   return null;
@@ -117,7 +119,7 @@ class AuthController extends StateNotifier<bool> {
     res.fold((l) => null, (r) {
       Navigator.pushAndRemoveUntil(
         context,
-        SignUpView.route(),
+        LandingView.route(),
         (route) => false,
       );
     });
