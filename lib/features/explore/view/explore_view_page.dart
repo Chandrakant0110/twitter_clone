@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/features/explore/controller/explore_controller.dart';
 import 'package:twitter_clone/features/explore/widgets/search_tile.dart';
+import 'package:twitter_clone/features/home/widgets/side_drawer.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class ExploreViewPage extends ConsumerStatefulWidget {
@@ -35,6 +36,7 @@ class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
 
     return Scaffold(
       appBar: AppBar(
+        // excludeHeaderSemantics: true,
         title: SizedBox(
           height: 50,
           child: TextField(
@@ -52,11 +54,21 @@ class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
               filled: true,
               enabledBorder: appBarTextFieldBorder,
               focusedBorder: appBarTextFieldBorder,
-              hintText: 'Search Twitter',
+              hintText: 'Search X',
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.settings_outlined,
+              size: 25,
+            ),
+          ),
+        ],
       ),
+      drawer: const SideDrawer(),
       body: isShowUsers
           ? ref.watch(searchUserProvider(searchController.text)).when(
                 data: (users) {
@@ -73,7 +85,15 @@ class _ExploreViewPageState extends ConsumerState<ExploreViewPage> {
                 ),
                 loading: () => const Loader(),
               )
-          : const SizedBox(),
+          : const Center(
+              child: Text(
+                'Search a X User.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
     );
   }
 }
