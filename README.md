@@ -18,7 +18,7 @@ Source Code for Full Stack Twitter App - Works on Android, iOS, Windows, MacOS a
 - Display followers, following, recent tweets
 - Edit User Profile
 - Show tweets that have 1 hashtag
-- Twitter Blue
+- Twitter Blue with Payment Gateway 
 - Notifications tab (replied to you, followed you, like your pic, retweeted)
 
 
